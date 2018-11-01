@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="@drawable/shape_rect_round_white"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingBottom="12mm"
+    android:paddingLeft="8mm"
+    android:paddingRight="8mm"
+    android:paddingTop="12mm">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingBottom="6mm"
+        android:paddingLeft="12mm"
+        android:paddingRight="12mm"
+        android:paddingTop="6mm">
+
+        <TextView
+            android:id="@+id/itemmsg_time"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginRight="12mm"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:singleLine="true"
+            android:text="发送时间 : 2018-09-20 18:12:06"
+            android:textColor="@color/default_font_black"
+            android:textSize="33sp" />
+
+        <TextView
+            android:id="@+id/itemmsg_status"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:drawableLeft="@drawable/icon_msg_blue"
+            android:gravity="center_vertical"
+            android:singleLine="true"
+            android:text="未读"
+            android:textColor="@color/default_font_black"
+            android:textSize="33sp" />
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1mm"
+        android:background="@color/default_divide_line"/>
+
+    <TextView
+        android:minLines="4"
+        android:maxLines="4"
+        android:gravity="left"
+        android:ellipsize="end"
+        android:textSize="32sp"
+        android:paddingTop="6mm"
+        android:paddingLeft="12mm"
+        android:paddingRight="12mm"
+        android:paddingBottom="6mm"
+        android:id="@+id/itemmsg_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="内容 : 成都龙哥当街撒钱，路人跪拜！"
+        android:textColor="@color/default_font_black" />
+</LinearLayout>

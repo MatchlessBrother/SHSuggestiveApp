@@ -6,6 +6,7 @@ import retrofit2.http.POST;
 import retrofit2.http.PartMap;
 import io.reactivex.Observable;
 import retrofit2.http.Multipart;
+import company.petrifaction.boss.bean.main.MsgBean;
 import company.petrifaction.boss.bean.main.UserInfo;
 import company.petrifaction.boss.bean.BaseReturnData;
 
@@ -17,6 +18,10 @@ public interface NetUrl
     @POST("/auth/modifyPassword.app")
     @Multipart
     Observable<BaseReturnData> modifyPassword(@PartMap Map<String, RequestBody> params);
+
+    @POST("/auth/modifyPassword.app")
+    @Multipart
+    Observable<BaseReturnData<MsgBean>> getMsg(@PartMap Map<String, RequestBody> params);
 
     @POST("/auth/login.app")
     @Multipart
