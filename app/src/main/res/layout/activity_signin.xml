@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorPrimary"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginLeft="110mm"
+        android:layout_marginRight="110mm"
+        android:layout_weight="1"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="96mm"
+            android:layout_height="96mm"
+            android:layout_centerInParent="true"
+            android:contentDescription=""
+            android:scaleType="fitXY"
+            android:src="@mipmap/bj" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30mm"
+            android:gravity="center"
+            android:singleLine="true"
+            android:text="可视化报警联动系统"
+            android:textColor="@color/white"
+            android:textSize="48sp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:singleLine="true"
+            android:text="Visual Alarm Linkage System"
+            android:textColor="#FF00C5D4"
+            android:textSize="30sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginLeft="110mm"
+        android:layout_marginRight="110mm"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="80mm"
+            android:addStatesFromChildren="true"
+            android:background="@drawable/selector_rect_round_skyblue_transtobrightblue"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="40mm"
+                android:layout_height="40mm"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="20mm"
+                android:layout_marginRight="10mm"
+                android:contentDescription=""
+                android:scaleType="fitXY"
+                android:src="@mipmap/accounticon" />
+
+            <EditText
+                android:id="@+id/signin_account"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="10mm"
+                android:layout_marginRight="20mm"
+                android:background="@color/transparent"
+                android:gravity="center_vertical|left"
+                android:inputType="text"
+                android:singleLine="true"
+                android:textColor="@color/white"
+                android:textSize="24mm"
+                tools:text="admin" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="80mm"
+            android:layout_marginTop="30mm"
+            android:addStatesFromChildren="true"
+            android:background="@drawable/selector_rect_round_skyblue_transtobrightblue"
+            android:descendantFocusability="afterDescendants"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="40mm"
+                android:layout_height="40mm"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="20mm"
+                android:layout_marginRight="10mm"
+                android:contentDescription=""
+                android:scaleType="fitXY"
+                android:src="@mipmap/passwordicon" />
+
+            <EditText
+                android:id="@+id/signin_password"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="10mm"
+                android:layout_marginRight="20mm"
+                android:background="@color/transparent"
+                android:gravity="center_vertical|left"
+                android:inputType="textPassword"
+                android:singleLine="true"
+                android:textColor="@color/white"
+                android:textSize="24mm"
+                tools:text="123456" />
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/signin_login"
+            android:layout_width="match_parent"
+            android:layout_height="88mm"
+            android:layout_marginTop="60mm"
+            android:background="@drawable/shape_rect_round_blue"
+            android:gravity="center"
+            android:singleLine="true"
+            android:text="登录"
+            android:textColor="@color/white"
+            android:textSize="36mm" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+        <TextView
+            android:id="@+id/signin_version"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="60mm"
+            android:gravity="center"
+            android:singleLine="true"
+            android:text="Version1.0.0"
+            android:textColor="@color/default_font_hint"
+            android:textSize="30sp" />
+    </LinearLayout>
+</LinearLayout>

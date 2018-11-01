@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/titlebar"
+    android:layout_width="match_parent"
+    android:layout_height="96mm"
+    android:background="@color/colorPrimary">
+
+    <LinearLayout
+        android:layout_width="120mm"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="12mm"
+        android:layout_marginRight="12mm"
+        android:gravity="center_vertical|left"
+        android:orientation="horizontal">
+
+        <ImageButton
+            android:id="@+id/titlebar_back"
+            android:layout_width="44mm"
+            android:layout_height="44mm"
+            android:background="@color/transparent"
+            android:scaleType="fitXY"
+            android:src="@mipmap/title_back" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/titlebar_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="144mm"
+        android:layout_marginRight="144mm"
+        android:gravity="center"
+        android:singleLine="true"
+        android:text="标题"
+        android:textColor="@color/white"
+        android:textSize="38sp" />
+
+    <LinearLayout
+        android:layout_width="120mm"
+        android:layout_height="match_parent"
+        android:layout_alignParentRight="true"
+        android:layout_marginLeft="12mm"
+        android:layout_marginRight="12mm"
+        android:gravity="center_vertical|right"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/titlebar_morefont"
+            android:layout_width="wrap_content"
+            android:layout_height="44mm"
+            android:gravity="center_vertical"
+            android:singleLine="true"
+            android:text="完成"
+            android:textColor="@color/white"
+            android:textSize="30sp"
+            android:visibility="gone" />
+
+        <ImageButton
+            android:id="@+id/titlebar_moreicon"
+            android:layout_width="44mm"
+            android:layout_height="44mm"
+            android:background="@color/transparent"
+            android:scaleType="fitXY"
+            android:src="@mipmap/slide"
+            android:visibility="gone" />
+    </LinearLayout>
+</RelativeLayout>

@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">石油监测提示端</string>
+    <string name="app_name_dev">石油监测提示端测试版</string>
+    <string name="action_settings">Settings</string>
+</resources>
