@@ -51,12 +51,18 @@
         <activity
             android:name="company.petrifaction.boss.ui.main.activity.view.MainAct"
             android:screenOrientation="portrait"
-            android:launchMode="singleTask">
-        </activity>
+            android:launchMode="singleTask"/>
 
         <activity
             android:name="company.petrifaction.boss.ui.main.activity.view.ModifyPasswordAct"
-            android:screenOrientation="portrait">
-        </activity>
+            android:screenOrientation="portrait"/>
+
+        <activity
+            android:name="company.petrifaction.boss.ui.main.activity.view.PreviewPhotoAct"
+            android:screenOrientation="portrait"/>
+
+        <activity
+            android:name="company.petrifaction.boss.ui.main.activity.view.MsgDetailAct"
+            android:screenOrientation="portrait"/>
     </application>
 </manifest>

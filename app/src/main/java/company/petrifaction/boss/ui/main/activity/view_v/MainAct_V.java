@@ -5,8 +5,10 @@ import company.petrifaction.boss.ui.base.BaseMvp_View;
 
 public interface MainAct_V extends BaseMvp_View
 {
-    void getFailOfMsg();
     void signOutSuccess();
     void signOutFailure();
-    void getSuccessOfMsg(MsgBean msgBean);
+    void finishRefresh();
+    void finishLoadMore();
+    void refreshDatas(MsgBean msgPageInfo);
+    void loadMoreDatas(MsgBean msgPageInfo);
 }

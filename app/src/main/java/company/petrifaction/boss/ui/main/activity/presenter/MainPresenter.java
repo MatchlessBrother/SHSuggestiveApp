@@ -14,6 +14,15 @@ import com.yuan.devlibrary._9__Network.okhttp.Http3Interceptions.TokenIntercepto
 
 public class MainPresenter extends BaseMvp_Presenter<MainAct_V>
 {
+    private int currentPageOfIndex;
+    private int currentPageOfMaxSize;
+
+    public MainPresenter()
+    {
+        currentPageOfIndex = 0;
+        currentPageOfMaxSize = 20;
+    }
+
     public void signOut()
     {
         if(isAttachContextAndViewLayer())
@@ -63,17 +72,21 @@ public class MainPresenter extends BaseMvp_Presenter<MainAct_V>
         }
     }
 
-    public void getMsg()
+    public void refreshDatas()
     {
         if(isAttachContextAndViewLayer())
         {
-            BaseMvp_EntranceOfModel.requestDatas(MainModel.class).executeOfNet(getContext(),MainModel.GetMsg,new BaseMvp_LocalObjCallBack<BaseReturnData<MsgBean>>(this)
+            currentPageOfIndex = 0;
+            BaseMvp_EntranceOfModel.requestDatas(MainModel.class).
+            putForm("pageIndex",currentPageOfIndex + "").putForm("pageSize",currentPageOfMaxSize + "").convertForms().executeOfNet(getContext(),MainModel.GetMsg,new BaseMvp_LocalObjCallBack<BaseReturnData<MsgBean>>(this)
             {
-                public void onSuccess(BaseReturnData<MsgBean> msgBean)
+                public void onSuccess(BaseReturnData<MsgBean> msgBeans)
                 {
                     if(isAttachContextAndViewLayer())
                     {
-                        getViewLayer().getSuccessOfMsg(msgBean.getData());
+                        getViewLayer().finishRefresh();
+                        currentPageOfIndex = currentPageOfMaxSize;
+                        getViewLayer().refreshDatas(msgBeans.getData());
                     }
                 }
 
@@ -82,7 +95,7 @@ public class MainPresenter extends BaseMvp_Presenter<MainAct_V>
                     super.onFailure(msg);
                     if(isAttachContextAndViewLayer())
                     {
-                        getViewLayer().getFailOfMsg();
+                        getViewLayer().finishRefresh();
                     }
                 }
 
@@ -91,7 +104,45 @@ public class MainPresenter extends BaseMvp_Presenter<MainAct_V>
                     super.onError(msg);
                     if(isAttachContextAndViewLayer())
                     {
-                        getViewLayer().getFailOfMsg();
+                        getViewLayer().finishRefresh();
+                    }
+                }
+            });
+        }
+    }
+
+    public void loadMoreDatas()
+    {
+        if(isAttachContextAndViewLayer())
+        {
+            BaseMvp_EntranceOfModel.requestDatas(MainModel.class).
+            putForm("pageIndex",currentPageOfIndex + "").putForm("pageSize",currentPageOfMaxSize + "").convertForms().executeOfNet(getContext(),MainModel.GetMsg,new BaseMvp_LocalObjCallBack<BaseReturnData<MsgBean>>(this)
+            {
+                public void onSuccess(BaseReturnData<MsgBean> msgBeans)
+                {
+                    if(isAttachContextAndViewLayer())
+                    {
+                        getViewLayer().finishLoadMore();
+                        currentPageOfIndex += currentPageOfMaxSize;
+                        getViewLayer().loadMoreDatas(msgBeans.getData());
+                    }
+                }
+
+                public void onFailure(String msg)
+                {
+                    super.onFailure(msg);
+                    if(isAttachContextAndViewLayer())
+                    {
+                        getViewLayer().finishLoadMore();
+                    }
+                }
+
+                public void onError(String msg)
+                {
+                    super.onError(msg);
+                    if(isAttachContextAndViewLayer())
+                    {
+                        getViewLayer().finishLoadMore();
                     }
                 }
             });

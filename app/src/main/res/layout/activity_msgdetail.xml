@@ -1,0 +1,425 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include layout="@layout/layout_title" />
+
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/msgdetail_swiperefreshlayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <android.support.v4.widget.NestedScrollView
+            android:id="@+id/msgdetail_nestedscrollview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fadingEdgeLength="0mm"
+            android:requiresFadingEdge="vertical"
+            android:scrollbars="none">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/default_background_gray"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/msgdetail_time"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"
+                    android:gravity="left|center_vertical"
+                    android:paddingBottom="20mm"
+                    android:paddingLeft="20mm"
+                    android:paddingRight="20mm"
+                    android:paddingTop="20mm"
+                    android:singleLine="true"
+                    android:text="发送时间 : 2018-08-20 18:28:45"
+                    android:textColor="@color/default_font_black"
+                    android:textSize="28sp" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1mm"
+                    android:layout_marginLeft="20mm"
+                    android:layout_marginRight="20mm"
+                    android:background="@color/default_divide_line" />
+
+                <TextView
+                    android:id="@+id/msgdetail_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"
+                    android:gravity="left|center_vertical"
+                    android:paddingBottom="12mm"
+                    android:paddingLeft="20mm"
+                    android:paddingRight="20mm"
+                    android:paddingTop="12mm"
+                    android:text="内容 : "
+                    android:textColor="@color/default_font_black"
+                    android:textSize="28sp" />
+
+
+                <LinearLayout
+                    android:id="@+id/msgdetail_musicall"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20mm"
+                    android:background="@color/white"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingBottom="20mm"
+                    android:paddingLeft="20mm"
+                    android:paddingRight="20mm"
+                    android:paddingTop="20mm">
+
+                    <TextView
+                        android:layout_width="0mm"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="left|center_vertical"
+                        android:singleLine="true"
+                        android:text="语音文件"
+                        android:textColor="@color/default_font_black"
+                        android:textSize="28sp" />
+
+                    <CheckBox
+                        android:id="@+id/msgdetail_music"
+                        android:layout_width="36mm"
+                        android:layout_height="36mm"
+                        android:layout_marginLeft="20mm"
+                        android:background="@drawable/selector_musiccontrol"
+                        android:button="@null" />
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20mm"
+                    android:background="@color/white"
+                    android:paddingBottom="20mm"
+                    android:paddingLeft="20mm"
+                    android:paddingRight="20mm"
+                    android:paddingTop="20mm"
+                    android:text="预案信息"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="28sp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingBottom="20mm"
+                    android:paddingLeft="20mm"
+                    android:paddingRight="20mm"
+                    android:paddingTop="20mm">
+
+                    <TextView
+                        android:layout_width="0mm"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="left|center_vertical"
+                        android:singleLine="true"
+                        android:text="预案名称"
+                        android:textColor="@color/default_font_hint"
+                        android:textSize="28sp" />
+
+                    <TextView
+                        android:id="@+id/msgdetail_yamc"
+                        android:layout_width="0mm"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="left|center_vertical"
+                        android:textColor="@color/default_font_black"
+                        android:textSize="28sp" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1mm"
+                    android:background="@color/default_divide_line" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingBottom="20mm"
+                    android:paddingLeft="20mm"
+                    android:paddingRight="20mm"
+                    android:paddingTop="20mm">
+
+                    <TextView
+                        android:layout_width="0mm"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="left|center_vertical"
+                        android:singleLine="true"
+                        android:text="预案地址"
+                        android:textColor="@color/default_font_hint"
+                        android:textSize="28sp" />
+
+                    <TextView
+                        android:id="@+id/msgdetail_yadz"
+                        android:layout_width="0mm"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="left|center_vertical"
+                        android:textColor="@color/default_font_black"
+                        android:textSize="28sp" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1mm"
+                    android:background="@color/default_divide_line" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingBottom="20mm"
+                    android:paddingLeft="20mm"
+                    android:paddingRight="20mm"
+                    android:paddingTop="20mm">
+
+                    <TextView
+                        android:layout_width="0mm"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="left|center_vertical"
+                        android:singleLine="true"
+                        android:text="联系电话(装置现场)"
+                        android:textColor="@color/default_font_hint"
+                        android:textSize="28sp" />
+
+                    <TextView
+                        android:id="@+id/msgdetail_zzxclxdh"
+                        android:layout_width="0mm"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="left|center_vertical"
+                        android:textColor="@color/default_font_black"
+                        android:textSize="28sp" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1mm"
+                    android:background="@color/default_divide_line" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingBottom="20mm"
+                    android:paddingLeft="20mm"
+                    android:paddingRight="20mm"
+                    android:paddingTop="20mm">
+
+                    <TextView
+                        android:layout_width="0mm"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="left|center_vertical"
+                        android:singleLine="true"
+                        android:text="负责人及电话"
+                        android:textColor="@color/default_font_hint"
+                        android:textSize="28sp" />
+
+                    <TextView
+                        android:id="@+id/msgdetail_fzrjdh"
+                        android:layout_width="0mm"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="left|center_vertical"
+                        android:textColor="@color/default_font_black"
+                        android:textSize="28sp" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1mm"
+                    android:background="@color/default_divide_line" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingBottom="20mm"
+                    android:paddingLeft="20mm"
+                    android:paddingRight="20mm"
+                    android:paddingTop="20mm">
+
+                    <TextView
+                        android:layout_width="0mm"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="left|center_vertical"
+                        android:singleLine="true"
+                        android:text="技术联系人电话"
+                        android:textColor="@color/default_font_hint"
+                        android:textSize="28sp" />
+
+                    <TextView
+                        android:id="@+id/msgdetail_jslxrdh"
+                        android:layout_width="0mm"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="left|center_vertical"
+                        android:textColor="@color/default_font_black"
+                        android:textSize="28sp" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1mm"
+                    android:background="@color/default_divide_line" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingBottom="20mm"
+                    android:paddingLeft="20mm"
+                    android:paddingRight="20mm"
+                    android:paddingTop="20mm">
+
+                    <TextView
+                        android:layout_width="0mm"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="left|center_vertical"
+                        android:singleLine="true"
+                        android:text="设备联系人电话"
+                        android:textColor="@color/default_font_hint"
+                        android:textSize="28sp" />
+
+                    <TextView
+                        android:id="@+id/msgdetail_sblxrdh"
+                        android:layout_width="0mm"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="left|center_vertical"
+                        android:textColor="@color/default_font_black"
+                        android:textSize="28sp" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1mm"
+                    android:background="@color/default_divide_line" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingBottom="20mm"
+                    android:paddingLeft="20mm"
+                    android:paddingRight="20mm"
+                    android:paddingTop="20mm">
+
+                    <TextView
+                        android:layout_width="0mm"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="left|center_vertical"
+                        android:singleLine="true"
+                        android:text="危化品"
+                        android:textColor="@color/default_font_hint"
+                        android:textSize="28sp" />
+
+                    <TextView
+                        android:id="@+id/msgdetail_whp"
+                        android:layout_width="0mm"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="left|center_vertical"
+                        android:textColor="@color/default_font_gray"
+                        android:textSize="28sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20mm"
+                    android:background="@color/white"
+                    android:orientation="vertical"
+                    android:paddingBottom="20mm"
+                    android:paddingLeft="20mm"
+                    android:paddingRight="20mm"
+                    android:paddingTop="12mm">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="left|center_vertical"
+                        android:singleLine="true"
+                        android:text="处置照片"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="28sp" />
+
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/msgdetail_czzp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20mm"
+                        android:fadingEdgeLength="0mm"
+                        android:requiresFadingEdge="vertical"
+                        android:scrollbars="none" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20mm"
+                    android:layout_marginBottom="20mm"
+                    android:background="@color/white"
+                    android:orientation="vertical"
+                    android:paddingBottom="20mm"
+                    android:paddingLeft="20mm"
+                    android:paddingRight="20mm"
+                    android:paddingTop="12mm">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="left|center_vertical"
+                        android:singleLine="true"
+                        android:text="预案文件"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="28sp" />
+
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/msgdetail_yawj"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20mm"
+                        android:fadingEdgeLength="0mm"
+                        android:requiresFadingEdge="vertical"
+                        android:scrollbars="none" />
+                </LinearLayout>
+            </LinearLayout>
+        </android.support.v4.widget.NestedScrollView>
+    </android.support.v4.widget.SwipeRefreshLayout>
+</LinearLayout>

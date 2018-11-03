@@ -9,6 +9,7 @@ import retrofit2.http.Multipart;
 import company.petrifaction.boss.bean.main.MsgBean;
 import company.petrifaction.boss.bean.main.UserInfo;
 import company.petrifaction.boss.bean.BaseReturnData;
+import company.petrifaction.boss.bean.main.MsgDetailBean;
 
 public interface NetUrl
 {
@@ -19,11 +20,15 @@ public interface NetUrl
     @Multipart
     Observable<BaseReturnData> modifyPassword(@PartMap Map<String, RequestBody> params);
 
-    @POST("/auth/modifyPassword.app")
+    @POST("/yjfb/notify/list.app")
     @Multipart
     Observable<BaseReturnData<MsgBean>> getMsg(@PartMap Map<String, RequestBody> params);
 
     @POST("/auth/login.app")
     @Multipart
     Observable<BaseReturnData<UserInfo>> signIn(@PartMap Map<String, RequestBody> params);
+
+    @POST("/yjfb/notify/detail.app")
+    @Multipart
+    Observable<BaseReturnData<MsgDetailBean>> getMsgOfDetailDats(@PartMap Map<String, RequestBody> params);
 }

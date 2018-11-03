@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/item_msgdetailfile_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:paddingBottom="20mm"
+        android:paddingLeft="20mm"
+        android:paddingRight="20mm"
+        android:paddingTop="20mm"
+        android:text="文件名"
+        android:textColor="@color/colorPrimary"
+        android:textSize="28mm" />
+
+    <View
+        android:id="@+id/item_msgdetailfile_dividerline"
+        android:layout_width="match_parent"
+        android:layout_height="1mm"
+        android:background="@color/default_divide_line" />
+</LinearLayout>
