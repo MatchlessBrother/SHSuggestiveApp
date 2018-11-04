@@ -10,11 +10,20 @@ import company.petrifaction.boss.bean.main.MsgBean;
 import company.petrifaction.boss.bean.main.UserInfo;
 import company.petrifaction.boss.bean.BaseReturnData;
 import company.petrifaction.boss.bean.main.MsgDetailBean;
+import company.petrifaction.boss.bean.BaseReturnListData;
+import company.petrifaction.boss.bean.main.RefreshMsgBean;
 
 public interface NetUrl
 {
     @POST("/auth/logout.app")
     Observable<BaseReturnData> signOut();
+
+    @POST("/yjfb/notify/newMessage.app")
+    Observable<BaseReturnListData<RefreshMsgBean>> refreshMsg();
+
+    @POST("/yjfb/notify/finishAction.app")
+    @Multipart
+    Observable<BaseReturnData> refreshMsgEnd(@PartMap Map<String, RequestBody> params);
 
     @POST("/auth/modifyPassword.app")
     @Multipart

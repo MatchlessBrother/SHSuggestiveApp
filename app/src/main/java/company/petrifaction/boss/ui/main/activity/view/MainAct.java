@@ -13,6 +13,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import company.petrifaction.boss.adapter.main.MsgAdapter;
+import company.petrifaction.boss.service.main.RefreshMsg;
 import com.yuan.devlibrary._12_______Utils.SharepreferenceUtils;
 import com.yuan.devlibrary._11___Widget.promptBox.BasePopupWindow;
 import company.petrifaction.boss.ui.main.activity.view_v.MainAct_V;
@@ -64,6 +65,8 @@ public class MainAct extends BaseAct implements MainAct_V,SignInAct_V
 
     protected void initLogic()
     {
+        startService(new Intent(this, RefreshMsg.class));
+
         if(!getIntent().getBooleanExtra("islogined",false))
             mSignInPresenter.signIn(SharepreferenceUtils.extractObject(this,"username",String.class).trim(),SharepreferenceUtils.extractObject(this,"password",String.class).trim());
 
