@@ -1,5 +1,10 @@
 <resources>
+    <string name="emergencynews">应急消息</string>
     <string name="app_name">石油监测提示端</string>
-    <string name="app_name_dev">石油监测提示端测试版</string>
     <string name="action_settings">Settings</string>
+    <string name="app_name_dev">石油监测提示端测试版</string>
+    <string name="emergencynews_needmusic">接收应急消息时播放语音提醒</string>
+    <string name="emergencynewsdes_needmusic">允许接收应急消息时播放语音提醒！</string>
+    <string name="emergencynews_notneedmusic">接收应急消息时不播放语音提醒</string>
+    <string name="emergencynewsdes_notneedmusic">允许接收应急消息时不播放语音提醒！</string>
 </resources>
