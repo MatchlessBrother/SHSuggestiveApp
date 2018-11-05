@@ -3,6 +3,7 @@ package com.yuan.devlibrary._2Activity;
 import android.os.Bundle;
 import android.view.View;
 import android.app.Activity;
+import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.app.AppCompatActivity;
 import com.yuan.devlibrary._1App.BaseApplication;
 import com.yuan.devlibrary._12_______Utils.ResourceUtils;
@@ -19,6 +20,7 @@ public abstract class BaseActivity extends AppCompatActivity
         /***********也只有这样才能正确计算出Activity的显示高度***********/
         initStatusBarAddTitleBar();
         super.onCreate(savedInstanceState);
+        AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
         mRootView = ResourceUtils.generateView(this,setLayoutResID());
         BaseApplication.mApplication.addActivity(mActivity);
         setContentView(mRootView);

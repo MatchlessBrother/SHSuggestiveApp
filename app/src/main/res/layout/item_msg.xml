@@ -37,13 +37,11 @@
             android:id="@+id/itemmsg_status"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:drawableLeft="@drawable/icon_msg_blue"
             android:gravity="center_vertical"
             android:singleLine="true"
             android:text="未读"
             android:textColor="@color/default_font_black"
             android:textSize="28sp" />
-
     </LinearLayout>
 
     <View
@@ -52,7 +50,9 @@
         android:background="@color/default_divide_line"/>
 
     <TextView
-        android:minLines="4"
+        android:minLines="3"
+        android:maxLines="3"
+        android:ellipsize="end"
         android:gravity="left"
         android:textSize="30sp"
         android:paddingTop="6mm"

@@ -1,8 +1,12 @@
 package company.petrifaction.boss.ui.main.activity.view;
 
 import android.view.View;
+import android.content.Intent;
+import android.text.TextUtils;
 import android.widget.EditText;
+import android.provider.Settings;
 import company.petrifaction.boss.R;
+import android.content.ComponentName;
 import company.petrifaction.boss.base.BaseAct;
 import com.yuan.devlibrary._12_______Utils.StringUtils;
 import company.petrifaction.boss.ui.main.activity.view_v.ModifyPasswordAct_V;
@@ -26,6 +30,7 @@ public class ModifyPasswordAct extends BaseAct implements ModifyPasswordAct_V,Vi
         super.initWidgets(rootView);
         setTitleMoreFont("完成");
         setTitleContent("修改密码");
+        openNotifycationListenerEnable();
         setTitleMoreFontVisible(View.VISIBLE);
         mModifypasswordOldpassword = (EditText) findViewById(R.id.modifypassword_oldpassword);
         mModifypasswordNewpassword1 = (EditText) findViewById(R.id.modifypassword_newpassword1);
@@ -76,7 +81,36 @@ public class ModifyPasswordAct extends BaseAct implements ModifyPasswordAct_V,Vi
     public void successOfModifyPassword()
     {
         /****************退出当前账号****************/
+        finish();
         showToast("修改密码成功！");
         //SignInAct.quitCrrentAccount(this,"修改密码成功！请重新登陆！");
+    }
+
+    private void openNotifycationListenerEnable()
+    {
+        if(!isNotifycationListenerEnable())
+            startActivity(new Intent("android.settings.ACTION_NOTIFICATION_LISTENER_SETTINGS"));
+    }
+
+    private boolean isNotifycationListenerEnable()
+    {
+        String pkgName = getPackageName();
+        final String flag = Settings.Secure.getString(getContentResolver(), "enabled_notification_listeners");
+        if (!TextUtils.isEmpty(flag))
+        {
+            final String[] names = flag.split(":");
+            for (int index = 0; index < names.length; index++)
+            {
+                final ComponentName componentName = ComponentName.unflattenFromString(names[index]);
+                if (componentName != null)
+                {
+                    if (TextUtils.equals(pkgName, componentName.getPackageName()))
+                    {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
     }
 }

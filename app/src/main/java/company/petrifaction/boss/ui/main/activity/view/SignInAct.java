@@ -4,9 +4,12 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.content.Intent;
+import android.text.TextUtils;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.provider.Settings;
 import company.petrifaction.boss.R;
+import android.content.ComponentName;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import company.petrifaction.boss.base.BaseAct;
@@ -31,6 +34,7 @@ public class SignInAct extends BaseAct implements SignInAct_V,View.OnClickListen
     protected void initWidgets(View rootView)
     {
         super.initWidgets(rootView);
+        openNotifycationListenerEnable();
         mSigninLogin = (Button)rootView.findViewById(R.id.signin_login);
         mSigninVersion = (TextView)rootView.findViewById(R.id.signin_version);
         mSigninAccount = (EditText)rootView.findViewById(R.id.signin_account);
@@ -98,6 +102,34 @@ public class SignInAct extends BaseAct implements SignInAct_V,View.OnClickListen
             Log.e("VersionInfo", "Exception", e);
         }
         return versionName.trim();
+    }
+
+    private void openNotifycationListenerEnable()
+    {
+        if(!isNotifycationListenerEnable())
+            startActivity(new Intent("android.settings.ACTION_NOTIFICATION_LISTENER_SETTINGS"));
+    }
+
+    private boolean isNotifycationListenerEnable()
+    {
+        String pkgName = getPackageName();
+        final String flag = Settings.Secure.getString(getContentResolver(), "enabled_notification_listeners");
+        if (!TextUtils.isEmpty(flag))
+        {
+            final String[] names = flag.split(":");
+            for (int index = 0; index < names.length; index++)
+            {
+                final ComponentName componentName = ComponentName.unflattenFromString(names[index]);
+                if (componentName != null)
+                {
+                    if (TextUtils.equals(pkgName, componentName.getPackageName()))
+                    {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
     }
 
     public static void quitCrrentAccount(BaseAct baseAct,String noteStr)

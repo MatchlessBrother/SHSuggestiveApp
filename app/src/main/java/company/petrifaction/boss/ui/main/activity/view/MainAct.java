@@ -1,11 +1,17 @@
 package company.petrifaction.boss.ui.main.activity.view;
 
+import android.os.Build;
 import android.view.View;
 import java.util.ArrayList;
+import android.text.TextUtils;
 import android.content.Intent;
+import com.hwangjr.rxbus.RxBus;
 import android.widget.TextView;
+import android.provider.Settings;
 import android.view.LayoutInflater;
 import company.petrifaction.boss.R;
+import android.content.ComponentName;
+import com.hwangjr.rxbus.annotation.Subscribe;
 import android.support.v7.widget.RecyclerView;
 import company.petrifaction.boss.base.BaseAct;
 import company.petrifaction.boss.bean.main.MsgBean;
@@ -13,11 +19,12 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import company.petrifaction.boss.adapter.main.MsgAdapter;
-import company.petrifaction.boss.service.main.RefreshMsg;
 import com.yuan.devlibrary._12_______Utils.SharepreferenceUtils;
+import company.petrifaction.boss.service.main.RefreshMsgService;
 import com.yuan.devlibrary._11___Widget.promptBox.BasePopupWindow;
 import company.petrifaction.boss.ui.main.activity.view_v.MainAct_V;
 import company.petrifaction.boss.ui.main.activity.view_v.SignInAct_V;
+import company.petrifaction.boss.service.main.NotificationMonitorService;
 import company.petrifaction.boss.ui.main.activity.presenter.MainPresenter;
 import company.petrifaction.boss.ui.main.activity.presenter.SignInPresenter;
 
@@ -29,6 +36,8 @@ public class MainAct extends BaseAct implements MainAct_V,SignInAct_V
     private RecyclerView mMainactRecyclerview;
     private SwipeRefreshLayout mMainactSwiperefreshlayout;
 
+    public static final int StartMsgDetailAct = 0x0001;
+
     protected int setLayoutResID()
     {
         return R.layout.activity_main;
@@ -39,11 +48,19 @@ public class MainAct extends BaseAct implements MainAct_V,SignInAct_V
         return mRootView;
     }
 
+    @Subscribe
+    public void refreshDatas(Boolean needRefresh)
+    {
+        mMainPresenter.refreshDatas();
+
+    }
+
     protected void initWidgets(View rootView)
     {
         super.initWidgets(rootView);
         setTitleContent("应急消息");
         setTitleBack(R.mipmap.usericon);
+        openNotifycationListenerEnable();
         mMainactRecyclerview = (RecyclerView) findViewById(R.id.mainact_recyclerview);
         mMainactSwiperefreshlayout = (SwipeRefreshLayout) findViewById(R.id.mainact_swiperefreshlayout);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
@@ -53,6 +70,13 @@ public class MainAct extends BaseAct implements MainAct_V,SignInAct_V
         mMainactRecyclerview.setAdapter(mMsgAdapter);
         mMainactSwiperefreshlayout.setEnabled(true);
         mMsgAdapter.setEnableLoadMore(true);
+        RxBus.get().register(this);
+    }
+
+    protected void onDestroy()
+    {
+        super.onDestroy();
+        RxBus.get().unregister(this);
     }
 
     protected void initDatas()
@@ -65,8 +89,9 @@ public class MainAct extends BaseAct implements MainAct_V,SignInAct_V
 
     protected void initLogic()
     {
-        startService(new Intent(this, RefreshMsg.class));
-
+        startService(new Intent(this, RefreshMsgService.class));
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT)
+            startService(new Intent(this, NotificationMonitorService.class));
         if(!getIntent().getBooleanExtra("islogined",false))
             mSignInPresenter.signIn(SharepreferenceUtils.extractObject(this,"username",String.class).trim(),SharepreferenceUtils.extractObject(this,"password",String.class).trim());
 
@@ -93,7 +118,7 @@ public class MainAct extends BaseAct implements MainAct_V,SignInAct_V
             {
                 Intent intent = new Intent(mActivity,MsgDetailAct.class);
                 intent.putExtra("msgid",mMsgAdapter.getData().get(position).getId());
-                startActivity(intent);
+                startActivityForResult(intent,StartMsgDetailAct);
             }
         });
     }
@@ -184,5 +209,42 @@ public class MainAct extends BaseAct implements MainAct_V,SignInAct_V
             mMsgAdapter.setEnableLoadMore(false);
         else
             mMsgAdapter.setEnableLoadMore(true);
+    }
+
+    private void openNotifycationListenerEnable()
+    {
+        if(!isNotifycationListenerEnable())
+            startActivity(new Intent("android.settings.ACTION_NOTIFICATION_LISTENER_SETTINGS"));
+    }
+
+    private boolean isNotifycationListenerEnable()
+    {
+        String pkgName = getPackageName();
+        final String flag = Settings.Secure.getString(getContentResolver(), "enabled_notification_listeners");
+        if (!TextUtils.isEmpty(flag))
+        {
+            final String[] names = flag.split(":");
+            for (int index = 0; index < names.length; index++)
+            {
+                final ComponentName componentName = ComponentName.unflattenFromString(names[index]);
+                if (componentName != null)
+                {
+                    if (TextUtils.equals(pkgName, componentName.getPackageName()))
+                    {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+    protected void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch(requestCode)
+        {
+            case StartMsgDetailAct:  mMainPresenter.refreshDatas();break;
+        }
     }
 }

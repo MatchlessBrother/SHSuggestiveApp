@@ -27,15 +27,15 @@
             android:id="@+id/dialogsigninexit_signin"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="20mm"
-            android:layout_marginTop="6mm"
-            android:layout_marginRight="20mm"
-            android:layout_marginBottom="6mm"
+            android:layout_marginLeft="40mm"
+            android:layout_marginTop="12mm"
+            android:layout_marginRight="40mm"
+            android:layout_marginBottom="12mm"
             android:gravity="center"
             android:singleLine="true"
             android:text="修改密码"
             android:textColor="@color/default_font_black"
-            android:textSize="26sp" />
+            android:textSize="30sp" />
 
         <TextView
             android:layout_width="match_parent"
@@ -46,14 +46,14 @@
             android:id="@+id/dialogsigninexit_exit"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="20mm"
-            android:layout_marginTop="6mm"
-            android:layout_marginRight="20mm"
-            android:layout_marginBottom="6mm"
+            android:layout_marginLeft="40mm"
+            android:layout_marginTop="12mm"
+            android:layout_marginRight="40mm"
+            android:layout_marginBottom="12mm"
             android:gravity="center"
             android:singleLine="true"
             android:text="退出系统"
             android:textColor="@color/default_font_black"
-            android:textSize="26sp" />
+            android:textSize="30sp" />
     </LinearLayout>
 </LinearLayout>

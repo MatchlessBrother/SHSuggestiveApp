@@ -9,11 +9,13 @@ import android.view.View;
 import java.io.IOException;
 import java.util.ArrayList;
 import android.os.StrictMode;
+import android.text.TextUtils;
 import android.content.Intent;
 import android.os.PowerManager;
 import android.widget.CheckBox;
 import android.widget.TextView;
 import android.content.Context;
+import android.provider.Settings;
 import android.media.MediaPlayer;
 import android.media.AudioManager;
 import java.text.SimpleDateFormat;
@@ -21,6 +23,7 @@ import android.widget.LinearLayout;
 import company.petrifaction.boss.R;
 import android.net.wifi.WifiManager;
 import android.widget.CompoundButton;
+import android.content.ComponentName;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import com.liulishuo.okdownload.StatusUtil;
@@ -83,6 +86,7 @@ public class MsgDetailAct extends BaseAct implements MsgDetailAct_V
     {
         super.initWidgets(rootView);
         setTitleContent("消息详情");
+        openNotifycationListenerEnable();
         mMsgId = getIntent().getStringExtra("msgid");
         mBaseImgPath = "http://git.yunfanwulian.com:20001";
         mSimpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -329,6 +333,34 @@ public class MsgDetailAct extends BaseAct implements MsgDetailAct_V
             case "flv":return "flv-application/octet-stream";
             default: return "*/*";
         }
+    }
+
+    private void openNotifycationListenerEnable()
+    {
+        if(!isNotifycationListenerEnable())
+            startActivity(new Intent("android.settings.ACTION_NOTIFICATION_LISTENER_SETTINGS"));
+    }
+
+    private boolean isNotifycationListenerEnable()
+    {
+        String pkgName = getPackageName();
+        final String flag = Settings.Secure.getString(getContentResolver(), "enabled_notification_listeners");
+        if (!TextUtils.isEmpty(flag))
+        {
+            final String[] names = flag.split(":");
+            for (int index = 0; index < names.length; index++)
+            {
+                final ComponentName componentName = ComponentName.unflattenFromString(names[index]);
+                if (componentName != null)
+                {
+                    if (TextUtils.equals(pkgName, componentName.getPackageName()))
+                    {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
     }
 
     public void openFile(String filePath, String fileType)
