@@ -1,6 +1,5 @@
 package company.petrifaction.boss.ui.main.activity.view;
 
-import android.os.Build;
 import android.view.View;
 import java.util.ArrayList;
 import android.text.TextUtils;
@@ -11,6 +10,7 @@ import android.provider.Settings;
 import android.view.LayoutInflater;
 import company.petrifaction.boss.R;
 import android.content.ComponentName;
+import com.xdandroid.hellodaemon.DaemonEnv;
 import com.hwangjr.rxbus.annotation.Subscribe;
 import android.support.v7.widget.RecyclerView;
 import company.petrifaction.boss.base.BaseAct;
@@ -20,11 +20,10 @@ import android.support.v7.widget.LinearLayoutManager;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import company.petrifaction.boss.adapter.main.MsgAdapter;
 import com.yuan.devlibrary._12_______Utils.SharepreferenceUtils;
-import company.petrifaction.boss.service.main.RefreshMsgService;
 import com.yuan.devlibrary._11___Widget.promptBox.BasePopupWindow;
 import company.petrifaction.boss.ui.main.activity.view_v.MainAct_V;
 import company.petrifaction.boss.ui.main.activity.view_v.SignInAct_V;
-import company.petrifaction.boss.service.main.NotificationMonitorService;
+import company.petrifaction.boss.service.main.ProtectNotifycationService;
 import company.petrifaction.boss.ui.main.activity.presenter.MainPresenter;
 import company.petrifaction.boss.ui.main.activity.presenter.SignInPresenter;
 
@@ -89,12 +88,17 @@ public class MainAct extends BaseAct implements MainAct_V,SignInAct_V
 
     protected void initLogic()
     {
-        startService(new Intent(this, RefreshMsgService.class));
+        /*startService(new Intent(this, RefreshMsgService.class));
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT)
-            startService(new Intent(this, NotificationMonitorService.class));
+            startService(new Intent(this, NotificationMonitorService.class));*/
         if(!getIntent().getBooleanExtra("islogined",false))
             mSignInPresenter.signIn(SharepreferenceUtils.extractObject(this,"username",String.class).trim(),SharepreferenceUtils.extractObject(this,"password",String.class).trim());
-
+        else
+        {
+            DaemonEnv.initialize(this, ProtectNotifycationService.class, DaemonEnv.DEFAULT_WAKE_UP_INTERVAL);
+            ProtectNotifycationService.sShouldStopService = false;
+            startService(new Intent(this,ProtectNotifycationService.class));
+        }
         mMainPresenter.refreshDatas();
         mMainactSwiperefreshlayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener()
         {
@@ -125,13 +129,15 @@ public class MainAct extends BaseAct implements MainAct_V,SignInAct_V
 
     public void signInSuccess()
     {
-
+        DaemonEnv.initialize(this, ProtectNotifycationService.class, DaemonEnv.DEFAULT_WAKE_UP_INTERVAL);
+        ProtectNotifycationService.sShouldStopService = false;
+        startService(new Intent(this,ProtectNotifycationService.class));
     }
 
     public void signInFailure()
     {
+        ProtectNotifycationService.stopService();
         SignInAct.quitCrrentAccount(this,"账号发生异常，请重新登录！");
-
     }
 
     public void finishRefresh()
@@ -154,8 +160,8 @@ public class MainAct extends BaseAct implements MainAct_V,SignInAct_V
 
     public void signOutSuccess()
     {
+        ProtectNotifycationService.stopService();
         SignInAct.quitCrrentAccount((BaseAct)mActivity,"退出登录成功！");
-
     }
 
     public void signOutFailure()

@@ -69,7 +69,7 @@
             android:screenOrientation="portrait"
             android:launchMode="singleTask"/>
 
-        <service android:name=".service.main.RefreshMsgService"/>
+        <service android:name="company.petrifaction.boss.service.main.RefreshMsgService"/>
 
         <service
             android:name="company.petrifaction.boss.service.main.NotificationMonitorService"
@@ -78,5 +78,9 @@
                 <action android:name="android.service.notification.NotificationListenerService"/>
             </intent-filter>
         </service>
+
+        <service
+            android:name="company.petrifaction.boss.service.main.ProtectNotifycationService"
+            android:permission="android.permission.BIND_JOB_SERVICE"/>
     </application>
 </manifest>

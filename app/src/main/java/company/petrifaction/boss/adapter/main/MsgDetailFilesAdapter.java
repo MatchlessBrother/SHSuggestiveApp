@@ -20,7 +20,7 @@ public class MsgDetailFilesAdapter  extends BaseQuickAdapter<String,BaseViewHold
 
     protected void convert(BaseViewHolder helper, String path)
     {
-        helper.setText(R.id.item_msgdetailfile_content,null != path ? path.trim() : "");
+        helper.setText(R.id.item_msgdetailfile_content,null != path  && !"".equals(path.trim()) ? path.trim().substring(path.trim().lastIndexOf("/") + 1,path.trim().length()) : "");
         if(helper.getAdapterPosition() == getData().size() - 1)
             helper.setGone(R.id.item_msgdetailfile_dividerline,false);
         else

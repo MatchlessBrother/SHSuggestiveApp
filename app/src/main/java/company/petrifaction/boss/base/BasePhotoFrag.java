@@ -13,18 +13,19 @@ import android.widget.ImageView;
 import android.view.WindowManager;
 import android.widget.ImageButton;
 import com.gyf.barlibrary.BarHide;
+import company.petrifaction.boss.R;
+import me.jessyan.autosize.AutoSize;
 import android.graphics.BitmapFactory;
 import com.gyf.barlibrary.ImmersionBar;
-import company.petrifaction.boss.R;
 import com.gyf.barlibrary.OnKeyboardListener;
 import android.graphics.drawable.ColorDrawable;
 import com.bumptech.glide.request.RequestOptions;
+import company.petrifaction.boss.ui.base.BaseMvp_View;
 import com.yuan.devlibrary._3Fragment.BasePhotoFragment;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.yuan.devlibrary._12_______Utils.PromptBoxUtils;
-import com.yuan.devlibrary._11___Widget.promptBox.BaseDialog;
-import company.petrifaction.boss.ui.base.BaseMvp_View;
 import company.petrifaction.boss.ui.base.BaseMvp_Presenter;
+import com.yuan.devlibrary._11___Widget.promptBox.BaseDialog;
 import com.yuan.devlibrary._11___Widget.promptBox.BaseProgressDialog;
 
 public abstract class BasePhotoFrag extends BasePhotoFragment implements BaseMvp_View,View.OnClickListener
@@ -69,6 +70,13 @@ public abstract class BasePhotoFrag extends BasePhotoFragment implements BaseMvp
             mTitleMoreFont.setOnClickListener(this);
             mTitleMoreIcon.setOnClickListener(this);
         }
+        AutoSize.autoConvertDensity(mActivity,720,true);
+    }
+
+    public void onResume()
+    {
+        super.onResume();
+        AutoSize.autoConvertDensity(mActivity,720,true);
     }
 
     public void onDestroy()

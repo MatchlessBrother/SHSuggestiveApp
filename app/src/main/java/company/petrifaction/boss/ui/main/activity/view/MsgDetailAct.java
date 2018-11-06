@@ -2,6 +2,7 @@ package company.petrifaction.boss.ui.main.activity.view;
 
 import java.io.File;
 import java.util.Map;
+import java.util.Date;
 import android.net.Uri;
 import android.os.Build;
 import java.util.HashMap;
@@ -25,7 +26,6 @@ import android.net.wifi.WifiManager;
 import android.widget.CompoundButton;
 import android.content.ComponentName;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import com.liulishuo.okdownload.StatusUtil;
 import com.liulishuo.okdownload.DownloadTask;
 import android.support.v7.widget.RecyclerView;
@@ -33,14 +33,15 @@ import company.petrifaction.boss.base.BaseAct;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v4.widget.SwipeRefreshLayout;
-import com.liulishuo.okdownload.core.cause.EndCause;
 import android.support.v7.widget.LinearLayoutManager;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.yuan.devlibrary._12_______Utils.MemoryUtils;
 import company.petrifaction.boss.bean.main.MsgDetailBean;
-import com.liulishuo.okdownload.core.listener.DownloadListener2;
+import com.liulishuo.okdownload.core.cause.ResumeFailedCause;
+import com.liulishuo.okdownload.core.listener.DownloadListener3;
 import company.petrifaction.boss.adapter.main.MsgDetailImgsAdapter;
 import company.petrifaction.boss.adapter.main.MsgDetailFilesAdapter;
+import com.yuan.devlibrary._11___Widget.promptBox.BaseProgressDialog;
 import company.petrifaction.boss.ui.main.activity.view_v.MsgDetailAct_V;
 import company.petrifaction.boss.ui.main.activity.presenter.MsgDetailPresenter;
 
@@ -59,6 +60,7 @@ public class MsgDetailAct extends BaseAct implements MsgDetailAct_V
     private TextView mMsgdetailJslxrdh;
     private TextView mMsgdetailSblxrdh;
     private TextView mMsgdetailWhp;
+    private TextView mMsgdetailMusicTv;
     private RecyclerView mMsgdetailCzzp;
     private RecyclerView mMsgdetailYawj;
     private SimpleDateFormat mSimpleDateFormat;
@@ -74,8 +76,9 @@ public class MsgDetailAct extends BaseAct implements MsgDetailAct_V
     private WifiManager.WifiLock mWifiLock;
     /**********************下载文件模块**********************/
     private String mDownloadPath;
-    private DownloadListener2 mDownloadListener;
+    private DownloadListener3 mDownloadListener;
     private Map<String,DownloadTask> mDownloadTaskMap;
+    private BaseProgressDialog mDownloadProgressDialog;
 
     protected int setLayoutResID()
     {
@@ -105,12 +108,15 @@ public class MsgDetailAct extends BaseAct implements MsgDetailAct_V
         mMsgdetailWhp = (TextView)rootView.findViewById(R.id.msgdetail_whp);
         mMsgdetailCzzp = (RecyclerView)rootView.findViewById(R.id.msgdetail_czzp);
         mMsgdetailYawj = (RecyclerView)rootView.findViewById(R.id.msgdetail_yawj);
+        mMsgdetailMusicTv = (TextView)rootView.findViewById(R.id.msgdetail_musichint);
         /******************************************************************************************/
         mMsgDetailImgsAdapter = new MsgDetailImgsAdapter(this,new ArrayList<String>());
         GridLayoutManager gridLayoutManager = new GridLayoutManager(this,3);
         gridLayoutManager.setOrientation(GridLayoutManager.VERTICAL);
         mMsgdetailCzzp.setLayoutManager(gridLayoutManager);
         mMsgdetailCzzp.setAdapter(mMsgDetailImgsAdapter);
+        mMsgdetailCzzp.setNestedScrollingEnabled(false);
+        mMsgdetailCzzp.setFocusableInTouchMode(false);
         /******************************************************************************************/
         mMsgDetailFilesAdapter = new MsgDetailFilesAdapter(this,new ArrayList<String>());
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
@@ -128,6 +134,10 @@ public class MsgDetailAct extends BaseAct implements MsgDetailAct_V
             public boolean onError(MediaPlayer mp, int what, int extra)
             {
                 mIsReadyPlayMusic=false;
+                mMsgdetailMusic.setEnabled(false);
+                mMsgdetailMusicall.setEnabled(false);
+                mMsgdetailMusicTv.setText("语音文件出错，请联系管理员，谢谢！");
+                mMsgdetailMusic.setVisibility(View.GONE);
                 return true;
             }
         });
@@ -147,16 +157,62 @@ public class MsgDetailAct extends BaseAct implements MsgDetailAct_V
         /******************************************************************************************/
         mDownloadPath = MemoryUtils.getBestFilesPath(this);
         mDownloadTaskMap = new HashMap<String,DownloadTask>();
-        mDownloadListener = new DownloadListener2()
+        mDownloadListener = new DownloadListener3()
         {
-            public void taskStart(@NonNull DownloadTask task)
+            protected void started(@NonNull DownloadTask task)
             {
-                showToast("开始下载：" + task.getFilename() + "文件，请稍后操作...");
+                mDownloadProgressDialog = showLoadingDialog();
             }
 
-            public void taskEnd(@NonNull DownloadTask task, @NonNull EndCause cause, @Nullable Exception realCause)
+            protected void warn(@NonNull DownloadTask task)
             {
-                showToast( "亲，" + task.getFilename() + "下载完毕，可以打开查看了哟！");
+                showToast("下载文件遇见错误！");
+                dismissLoadingDialog(mDownloadProgressDialog);
+            }
+
+            protected void canceled(@NonNull DownloadTask task)
+            {
+                showToast("取消文件下载！");
+                dismissLoadingDialog(mDownloadProgressDialog);
+            }
+
+            protected void completed(@NonNull DownloadTask task)
+            {
+                if(!task.getFile().exists())
+                {
+                    try
+                    {
+                        task.getFile().createNewFile();
+                    }
+                    catch (IOException e)
+                    {
+                        e.printStackTrace();
+                    }
+                }
+                showToast("下载文件成功！");
+                dismissLoadingDialog(mDownloadProgressDialog);
+                openFile(task.getFile().getAbsolutePath(),task.getFile().getAbsolutePath().trim().substring(task.getFile().getAbsolutePath().trim().lastIndexOf(".") + 1,task.getFile().getAbsolutePath().trim().length()));
+            }
+
+            protected void error(@NonNull DownloadTask task, @NonNull Exception e)
+            {
+                showToast("下载文件失败！");
+                dismissLoadingDialog(mDownloadProgressDialog);
+            }
+
+            public void retry(@NonNull DownloadTask task, @NonNull ResumeFailedCause cause)
+            {
+
+            }
+
+            public void progress(@NonNull DownloadTask task, long currentOffset, long totalLength)
+            {
+
+            }
+
+            public void connected(@NonNull DownloadTask task, int blockCount, long currentOffset, long totalLength)
+            {
+
             }
         };
         /******************************************************************************************/
@@ -290,6 +346,10 @@ public class MsgDetailAct extends BaseAct implements MsgDetailAct_V
     {
         if(null != mMusicDataSource && !"".equals(mMusicDataSource.trim()) && !mBaseImgPath.equals(mMusicDataSource.trim()))
         {
+            mMsgdetailMusicTv.setText("语音文件");
+            mMsgdetailMusic.setEnabled(true);
+            mMsgdetailMusicall.setEnabled(true);
+            mMsgdetailMusic.setVisibility(View.VISIBLE);
             try
             {
                 mMediaPlayer.reset();
@@ -303,7 +363,10 @@ public class MsgDetailAct extends BaseAct implements MsgDetailAct_V
         }
         else
         {
-            showToast("当前应急消息没有可播放的语音文件哟！");
+            mMsgdetailMusicTv.setText("无语音文件");
+            mMsgdetailMusic.setEnabled(false);
+            mMsgdetailMusicall.setEnabled(false);
+            mMsgdetailMusic.setVisibility(View.GONE);
         }
     }
 
@@ -366,7 +429,7 @@ public class MsgDetailAct extends BaseAct implements MsgDetailAct_V
     public void openFile(String filePath, String fileType)
     {
         Intent intent = new Intent(Intent.ACTION_VIEW);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N)
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.N)
         {
             StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
             StrictMode.setVmPolicy(builder.build());
@@ -379,17 +442,30 @@ public class MsgDetailAct extends BaseAct implements MsgDetailAct_V
     public void successOfGetDatas(MsgDetailBean msgDetailBean)
     {
         mMsgdetailSwiperefreshlayout.setRefreshing(false);
+        /*Date date = new Date();
+        date.setTime(Long.valueOf(null != msgDetailBean.getCreateTime() ? msgDetailBean.getCreateTime().trim() : ""));
+        mMsgdetailTime.setText("发送时间 : " + mSimpleDateFormat.format(date));*/
         mMsgdetailTime.setText("发送时间 : " + (null != msgDetailBean.getCreateTime() ? msgDetailBean.getCreateTime().trim() : ""));
         mMsgdetailContent.setText("内容 : "+ (null != msgDetailBean.getTextContent() ? msgDetailBean.getTextContent().trim() : ""));
         mMsgdetailYamc.setText(null != msgDetailBean.getPlanName() ? msgDetailBean.getPlanName().trim() : "");
         mMsgdetailYadz.setText(null != msgDetailBean.getPlanAddress() ? msgDetailBean.getPlanAddress().trim() : "");
         mMsgdetailZzxclxdh.setText(null != msgDetailBean.getTelephone() ? msgDetailBean.getTelephone().trim() : "");
+        /****************************************************************************************************************************/
         StringBuffer fzrjdhBuffer = new StringBuffer();
-        fzrjdhBuffer.append(null != msgDetailBean.getLeaderName() ? msgDetailBean.getLeaderName().trim()  + "(": "(");
-        fzrjdhBuffer.append(null != msgDetailBean.getLeaderTelephone() ? msgDetailBean.getLeaderTelephone().trim()  + ")": ")");
+        fzrjdhBuffer.append(null != msgDetailBean.getLeaderName() ? msgDetailBean.getLeaderName().trim() : "");
+        fzrjdhBuffer.append(null != msgDetailBean.getLeaderTelephone() ? "(" + msgDetailBean.getLeaderTelephone().trim()  + ")": "");
         mMsgdetailFzrjdh.setText(fzrjdhBuffer.toString().trim());
-        mMsgdetailJslxrdh.setText(null != msgDetailBean.getTechnicalTelephone() ? msgDetailBean.getTechnicalTelephone().trim() : "");
-        mMsgdetailSblxrdh.setText(null != msgDetailBean.getDeviceTelephone() ? msgDetailBean.getDeviceTelephone().trim() : "");
+        /****************************************************************************************************************************/
+        StringBuffer jslxrjdhBuffer = new StringBuffer();
+        jslxrjdhBuffer.append(null != msgDetailBean.getTechnicalName() ? msgDetailBean.getTechnicalName().trim() : "");
+        jslxrjdhBuffer.append(null != msgDetailBean.getTechnicalTelephone() ? "(" + msgDetailBean.getTechnicalTelephone().trim()  + ")": "");
+        mMsgdetailJslxrdh.setText(jslxrjdhBuffer.toString().trim());
+        /****************************************************************************************************************************/
+        StringBuffer sblxrjdhBuffer = new StringBuffer();
+        sblxrjdhBuffer.append(null != msgDetailBean.getDeviceName() ? msgDetailBean.getDeviceName().trim(): "");
+        sblxrjdhBuffer.append(null != msgDetailBean.getDeviceTelephone() ? "(" + msgDetailBean.getDeviceTelephone().trim()  + ")": "");
+        mMsgdetailSblxrdh.setText(sblxrjdhBuffer.toString().trim());
+        /****************************************************************************************************************************/
         mMsgdetailWhp.setText(null != msgDetailBean.getChemical() ? msgDetailBean.getChemical().trim() : "");
         mMsgDetailImgsAdapter.setNewData(null != msgDetailBean.getPlanImages() ? msgDetailBean.getPlanImages() : new ArrayList<String>());
         mMsgDetailFilesAdapter.setNewData(null != msgDetailBean.getPlanFiles() ? msgDetailBean.getPlanFiles() : new ArrayList<String>());

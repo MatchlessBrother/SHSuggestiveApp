@@ -17,10 +17,11 @@
         <android.support.v4.widget.NestedScrollView
             android:background="@color/default_background_gray"
             android:id="@+id/msgdetail_nestedscrollview"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:fadingEdgeLength="0mm"
             android:requiresFadingEdge="vertical"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:fadingEdgeLength="0mm"
+            android:fillViewport="true"
             android:scrollbars="none">
 
             <LinearLayout
@@ -80,6 +81,7 @@
                     android:paddingTop="20mm">
 
                     <TextView
+                        android:id="@+id/msgdetail_musichint"
                         android:layout_width="0mm"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -272,7 +274,7 @@
                         android:layout_weight="1"
                         android:gravity="left|center_vertical"
                         android:singleLine="true"
-                        android:text="技术联系人电话"
+                        android:text="技术联系人及电话"
                         android:textColor="@color/default_font_hint"
                         android:textSize="28sp" />
 
@@ -308,7 +310,7 @@
                         android:layout_weight="1"
                         android:gravity="left|center_vertical"
                         android:singleLine="true"
-                        android:text="设备联系人电话"
+                        android:text="设备联系人及电话"
                         android:textColor="@color/default_font_hint"
                         android:textSize="28sp" />
 
@@ -325,6 +327,7 @@
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1mm"
+                    android:visibility="gone"
                     android:background="@color/default_divide_line" />
 
                 <LinearLayout
@@ -336,7 +339,8 @@
                     android:paddingBottom="20mm"
                     android:paddingLeft="20mm"
                     android:paddingRight="20mm"
-                    android:paddingTop="20mm">
+                    android:paddingTop="20mm"
+                    android:visibility="gone">
 
                     <TextView
                         android:layout_width="0mm"
@@ -364,7 +368,7 @@
                     android:layout_marginTop="20mm"
                     android:background="@color/white"
                     android:orientation="vertical"
-                    android:paddingBottom="20mm"
+                    android:paddingBottom="12mm"
                     android:paddingLeft="20mm"
                     android:paddingRight="20mm"
                     android:paddingTop="12mm">
@@ -374,16 +378,16 @@
                         android:layout_height="wrap_content"
                         android:gravity="left|center_vertical"
                         android:singleLine="true"
-                        android:text="处置照片"
+                        android:text="预案图片"
                         android:textColor="@color/colorPrimary"
                         android:textSize="28sp" />
-
 
                     <android.support.v7.widget.RecyclerView
                         android:id="@+id/msgdetail_czzp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="20mm"
+                        android:layout_marginBottom="20mm"
                         android:fadingEdgeLength="0mm"
                         android:requiresFadingEdge="vertical"
                         android:scrollbars="none" />

@@ -90,6 +90,7 @@ dependencies {
     implementation project(':DevLibrary')
     testImplementation 'junit:junit:4.12'
     implementation 'me.jessyan:autosize:1.0.5'
+    implementation 'com.xdandroid:hellodaemon:+'
     implementation 'com.hwangjr.rxbus:rxbus:1.0.6'
     implementation 'com.github.abel533:ECharts:3.0.0.6'
     implementation 'com.android.support:multidex:1.0.1'

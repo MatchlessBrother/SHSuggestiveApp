@@ -5,9 +5,8 @@ import me.jessyan.autosize.AutoSize;
 import android.support.multidex.MultiDex;
 import me.jessyan.autosize.unit.Subunits;
 import me.jessyan.autosize.AutoSizeConfig;
-import company.petrifaction.boss.bean.main.UserInfo;
-
 import com.yuan.devlibrary._1App.BaseApplication;
+import company.petrifaction.boss.bean.main.UserInfo;
 
 public class BaseApp extends BaseApplication
 {
