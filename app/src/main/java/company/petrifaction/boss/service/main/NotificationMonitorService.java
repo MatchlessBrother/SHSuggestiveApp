@@ -18,7 +18,7 @@ public class NotificationMonitorService extends NotificationListenerService
         isStop = false;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
         {
-            Notification notification = new Notification.Builder(this,String.valueOf(Integer.MAX_VALUE / 2 + 1)).build();
+            Notification notification = new Notification.Builder(this,"notneedmusic_emergencynews").build();
             startForeground(Integer.MAX_VALUE / 2 + 1,notification);
         }
     }

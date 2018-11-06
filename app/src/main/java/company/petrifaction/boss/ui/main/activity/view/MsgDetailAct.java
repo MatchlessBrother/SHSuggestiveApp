@@ -436,16 +436,18 @@ public class MsgDetailAct extends BaseAct implements MsgDetailAct_V
         }
         Uri data = Uri.fromFile(new File(filePath));
         intent.setDataAndType(data,getFileType(fileType));
-        startActivity(intent);
+        if(getPackageManager().queryIntentActivities(intent,0).size() > 0)
+            startActivity(intent);
+        else
+            showToast("未找到可以打开该文件的APP！");
     }
 
     public void successOfGetDatas(MsgDetailBean msgDetailBean)
     {
         mMsgdetailSwiperefreshlayout.setRefreshing(false);
-        /*Date date = new Date();
+        Date date = new Date();
         date.setTime(Long.valueOf(null != msgDetailBean.getCreateTime() ? msgDetailBean.getCreateTime().trim() : ""));
-        mMsgdetailTime.setText("发送时间 : " + mSimpleDateFormat.format(date));*/
-        mMsgdetailTime.setText("发送时间 : " + (null != msgDetailBean.getCreateTime() ? msgDetailBean.getCreateTime().trim() : ""));
+        mMsgdetailTime.setText("发送时间 : " + mSimpleDateFormat.format(date));
         mMsgdetailContent.setText("内容 : "+ (null != msgDetailBean.getTextContent() ? msgDetailBean.getTextContent().trim() : ""));
         mMsgdetailYamc.setText(null != msgDetailBean.getPlanName() ? msgDetailBean.getPlanName().trim() : "");
         mMsgdetailYadz.setText(null != msgDetailBean.getPlanAddress() ? msgDetailBean.getPlanAddress().trim() : "");

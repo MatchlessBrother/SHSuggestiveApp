@@ -1,5 +1,6 @@
 package company.petrifaction.boss.ui.main.activity.view;
 
+import android.content.Context;
 import android.view.View;
 import java.util.ArrayList;
 import android.text.TextUtils;
@@ -10,6 +11,7 @@ import android.provider.Settings;
 import android.view.LayoutInflater;
 import company.petrifaction.boss.R;
 import android.content.ComponentName;
+import android.app.NotificationManager;
 import com.xdandroid.hellodaemon.DaemonEnv;
 import com.hwangjr.rxbus.annotation.Subscribe;
 import android.support.v7.widget.RecyclerView;
@@ -136,6 +138,8 @@ public class MainAct extends BaseAct implements MainAct_V,SignInAct_V
 
     public void signInFailure()
     {
+        NotificationManager notificationManager = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
+        notificationManager.cancelAll();
         ProtectNotifycationService.stopService();
         SignInAct.quitCrrentAccount(this,"账号发生异常，请重新登录！");
     }
@@ -160,6 +164,8 @@ public class MainAct extends BaseAct implements MainAct_V,SignInAct_V
 
     public void signOutSuccess()
     {
+        NotificationManager notificationManager = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
+        notificationManager.cancelAll();
         ProtectNotifycationService.stopService();
         SignInAct.quitCrrentAccount((BaseAct)mActivity,"退出登录成功！");
     }

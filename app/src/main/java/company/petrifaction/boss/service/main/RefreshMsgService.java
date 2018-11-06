@@ -75,7 +75,7 @@ public class RefreshMsgService extends Service
         }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
         {
-            Notification notification = new Notification.Builder(this,Integer.MAX_VALUE/2 + "").build();
+            Notification notification = new Notification.Builder(this,mNotifyChannelNotNeedMusicId).build();
             startForeground(Integer.MAX_VALUE/2,notification);
         }
     }
