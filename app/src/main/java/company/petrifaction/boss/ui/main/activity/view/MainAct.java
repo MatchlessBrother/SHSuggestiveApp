@@ -1,12 +1,13 @@
 package company.petrifaction.boss.ui.main.activity.view;
 
-import android.content.Context;
+import android.net.Uri;
 import android.view.View;
 import java.util.ArrayList;
 import android.text.TextUtils;
 import android.content.Intent;
 import com.hwangjr.rxbus.RxBus;
 import android.widget.TextView;
+import android.content.Context;
 import android.provider.Settings;
 import android.view.LayoutInflater;
 import company.petrifaction.boss.R;
@@ -20,6 +21,7 @@ import company.petrifaction.boss.bean.main.MsgBean;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import com.chad.library.adapter.base.BaseQuickAdapter;
+import android.support.v4.app.NotificationManagerCompat;
 import company.petrifaction.boss.adapter.main.MsgAdapter;
 import com.yuan.devlibrary._12_______Utils.SharepreferenceUtils;
 import com.yuan.devlibrary._11___Widget.promptBox.BasePopupWindow;
@@ -60,6 +62,7 @@ public class MainAct extends BaseAct implements MainAct_V,SignInAct_V
     {
         super.initWidgets(rootView);
         setTitleContent("应急消息");
+        openNotifycationEnable();
         setTitleBack(R.mipmap.usericon);
         openNotifycationListenerEnable();
         mMainactRecyclerview = (RecyclerView) findViewById(R.id.mainact_recyclerview);
@@ -202,6 +205,19 @@ public class MainAct extends BaseAct implements MainAct_V,SignInAct_V
         });
         if(isUseDefaultTitleLine())
             basePopupWindow.showAsDropDown(mTitleBackBtn,12,6);
+    }
+
+    private void openNotifycationEnable()
+    {
+        if(!NotificationManagerCompat.from(getApplicationContext()).areNotificationsEnabled())
+        {
+            Intent intent = new Intent();
+            showToast("请选择通知选项并开启通知权限，否则无法接收应急消息！谢谢");
+            Uri uri = Uri.fromParts("package",getPackageName(), null);
+            intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+            intent.setData(uri);
+            startActivity(intent);
+        }
     }
 
     public void refreshDatas(MsgBean msgPageInfo)

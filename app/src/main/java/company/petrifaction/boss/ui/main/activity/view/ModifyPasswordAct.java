@@ -1,5 +1,6 @@
 package company.petrifaction.boss.ui.main.activity.view;
 
+import android.net.Uri;
 import android.view.View;
 import android.content.Intent;
 import android.text.TextUtils;
@@ -9,6 +10,7 @@ import company.petrifaction.boss.R;
 import android.content.ComponentName;
 import company.petrifaction.boss.base.BaseAct;
 import com.yuan.devlibrary._12_______Utils.StringUtils;
+import android.support.v4.app.NotificationManagerCompat;
 import company.petrifaction.boss.ui.main.activity.view_v.ModifyPasswordAct_V;
 import company.petrifaction.boss.ui.main.activity.presenter.ModifyPasswordPresenter;
 
@@ -30,6 +32,7 @@ public class ModifyPasswordAct extends BaseAct implements ModifyPasswordAct_V,Vi
         super.initWidgets(rootView);
         setTitleMoreFont("完成");
         setTitleContent("修改密码");
+        openNotifycationEnable();
         openNotifycationListenerEnable();
         setTitleMoreFontVisible(View.VISIBLE);
         mModifypasswordOldpassword = (EditText) findViewById(R.id.modifypassword_oldpassword);
@@ -84,6 +87,19 @@ public class ModifyPasswordAct extends BaseAct implements ModifyPasswordAct_V,Vi
         finish();
         showToast("修改密码成功！");
         //SignInAct.quitCrrentAccount(this,"修改密码成功！请重新登陆！");
+    }
+
+    private void openNotifycationEnable()
+    {
+        if(!NotificationManagerCompat.from(getApplicationContext()).areNotificationsEnabled())
+        {
+            Intent intent = new Intent();
+            showToast("请选择通知选项并开启通知权限，否则无法接收应急消息！谢谢");
+            Uri uri = Uri.fromParts("package",getPackageName(), null);
+            intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+            intent.setData(uri);
+            startActivity(intent);
+        }
     }
 
     private void openNotifycationListenerEnable()

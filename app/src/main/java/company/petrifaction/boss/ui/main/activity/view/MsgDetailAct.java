@@ -36,6 +36,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.yuan.devlibrary._12_______Utils.MemoryUtils;
+import android.support.v4.app.NotificationManagerCompat;
 import company.petrifaction.boss.bean.main.MsgDetailBean;
 import com.liulishuo.okdownload.core.cause.ResumeFailedCause;
 import com.liulishuo.okdownload.core.listener.DownloadListener3;
@@ -89,6 +90,7 @@ public class MsgDetailAct extends BaseAct implements MsgDetailAct_V
     {
         super.initWidgets(rootView);
         setTitleContent("消息详情");
+        openNotifycationEnable();
         openNotifycationListenerEnable();
         mMsgId = getIntent().getStringExtra("msgid");
         mBaseImgPath = "http://git.yunfanwulian.com:20001";
@@ -395,6 +397,19 @@ public class MsgDetailAct extends BaseAct implements MsgDetailAct_V
             case "avi":return "video/x-msvideo";
             case "flv":return "flv-application/octet-stream";
             default: return "*/*";
+        }
+    }
+
+    private void openNotifycationEnable()
+    {
+        if(!NotificationManagerCompat.from(getApplicationContext()).areNotificationsEnabled())
+        {
+            Intent intent = new Intent();
+            showToast("请选择通知选项并开启通知权限，否则无法接收应急消息！谢谢");
+            Uri uri = Uri.fromParts("package",getPackageName(), null);
+            intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+            intent.setData(uri);
+            startActivity(intent);
         }
     }
 
