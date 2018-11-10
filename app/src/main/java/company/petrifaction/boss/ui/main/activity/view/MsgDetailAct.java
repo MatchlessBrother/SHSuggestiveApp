@@ -251,7 +251,11 @@ public class MsgDetailAct extends BaseAct implements MsgDetailAct_V
         {
             public void onItemClick(BaseQuickAdapter adapter, View view, int position)
             {
-                if(mMsgDetailFilesAdapter.getData().get(position).substring(mMsgDetailFilesAdapter.getData().get(position).lastIndexOf("."),mMsgDetailFilesAdapter.getData().get(position).length()).contains("png") ||
+                if(mMsgDetailFilesAdapter.getData().get(position).lastIndexOf(".")  == -1)
+                {
+                    showToast("文件为无效格式，因此无法下载");
+                }
+                else if(mMsgDetailFilesAdapter.getData().get(position).substring(mMsgDetailFilesAdapter.getData().get(position).lastIndexOf("."),mMsgDetailFilesAdapter.getData().get(position).length()).contains("png") ||
                    mMsgDetailFilesAdapter.getData().get(position).substring(mMsgDetailFilesAdapter.getData().get(position).lastIndexOf("."),mMsgDetailFilesAdapter.getData().get(position).length()).contains("jpg") ||
                    mMsgDetailFilesAdapter.getData().get(position).substring(mMsgDetailFilesAdapter.getData().get(position).lastIndexOf("."),mMsgDetailFilesAdapter.getData().get(position).length()).contains("jpeg"))
                 {
@@ -336,6 +340,14 @@ public class MsgDetailAct extends BaseAct implements MsgDetailAct_V
         mWifiLock.release();
         mMediaPlayer = null;
         mWifiLock = null;
+    }
+
+    protected void onNewIntent(Intent intent)
+    {
+        super.onNewIntent(intent);
+        mMsgId = intent.getStringExtra("msgid");
+        initDatas();
+        initLogic();
     }
 
     public void failOfGetDatas()
@@ -470,17 +482,17 @@ public class MsgDetailAct extends BaseAct implements MsgDetailAct_V
         /****************************************************************************************************************************/
         StringBuffer fzrjdhBuffer = new StringBuffer();
         fzrjdhBuffer.append(null != msgDetailBean.getLeaderName() ? msgDetailBean.getLeaderName().trim() : "");
-        fzrjdhBuffer.append(null != msgDetailBean.getLeaderTelephone() ? "(" + msgDetailBean.getLeaderTelephone().trim()  + ")": "");
+        fzrjdhBuffer.append(null != msgDetailBean.getLeaderTelephone()  && !"".equals(msgDetailBean.getLeaderTelephone().trim()) ? "(" + msgDetailBean.getLeaderTelephone().trim()  + ")": "");
         mMsgdetailFzrjdh.setText(fzrjdhBuffer.toString().trim());
         /****************************************************************************************************************************/
         StringBuffer jslxrjdhBuffer = new StringBuffer();
         jslxrjdhBuffer.append(null != msgDetailBean.getTechnicalName() ? msgDetailBean.getTechnicalName().trim() : "");
-        jslxrjdhBuffer.append(null != msgDetailBean.getTechnicalTelephone() ? "(" + msgDetailBean.getTechnicalTelephone().trim()  + ")": "");
+        jslxrjdhBuffer.append(null != msgDetailBean.getTechnicalTelephone() && !"".equals(msgDetailBean.getTechnicalTelephone().trim()) ? "(" + msgDetailBean.getTechnicalTelephone().trim()  + ")": "");
         mMsgdetailJslxrdh.setText(jslxrjdhBuffer.toString().trim());
         /****************************************************************************************************************************/
         StringBuffer sblxrjdhBuffer = new StringBuffer();
         sblxrjdhBuffer.append(null != msgDetailBean.getDeviceName() ? msgDetailBean.getDeviceName().trim(): "");
-        sblxrjdhBuffer.append(null != msgDetailBean.getDeviceTelephone() ? "(" + msgDetailBean.getDeviceTelephone().trim()  + ")": "");
+        sblxrjdhBuffer.append(null != msgDetailBean.getDeviceTelephone() && !"".equals(msgDetailBean.getDeviceTelephone().trim()) ? "(" + msgDetailBean.getDeviceTelephone().trim()  + ")": "");
         mMsgdetailSblxrdh.setText(sblxrjdhBuffer.toString().trim());
         /****************************************************************************************************************************/
         mMsgdetailWhp.setText(null != msgDetailBean.getChemical() ? msgDetailBean.getChemical().trim() : "");

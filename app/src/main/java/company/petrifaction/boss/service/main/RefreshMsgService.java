@@ -13,6 +13,7 @@ import android.content.Context;
 import com.hwangjr.rxbus.RxBus;
 import android.app.Notification;
 import android.app.PendingIntent;
+import android.provider.Settings;
 import company.petrifaction.boss.R;
 import android.graphics.BitmapFactory;
 import android.app.NotificationManager;
@@ -25,6 +26,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import company.petrifaction.boss.bean.BaseReturnListData;
 import company.petrifaction.boss.bean.main.RefreshMsgBean;
 import company.petrifaction.boss.ui.base.BaseMvp_Presenter;
+import company.petrifaction.boss.ui.main.activity.view.MainAct;
 import company.petrifaction.boss.ui.base.BaseMvp_EntranceOfModel;
 import company.petrifaction.boss.ui.base.BaseMvp_LocalObjCallBack;
 import company.petrifaction.boss.ui.base.BaseMvp_LocalListCallBack;
@@ -34,6 +36,7 @@ import company.petrifaction.boss.ui.main.activity.model.RefresgMsgModel;
 public class RefreshMsgService extends Service
 {
     public static boolean isStop;
+    private static int requestCode;
     private boolean mIsChangeMsgStatus;
     private String mNotifyChannelNeedMusicId;
     private String mNotifyChannelNotNeedMusicId;
@@ -44,6 +47,7 @@ public class RefreshMsgService extends Service
     {
         super.onCreate();
         isStop = false;
+        requestCode = 0;
         mNotificationManager = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
         mNotifyChannelNotNeedMusicId = "notneedmusic_emergencynews";
         mNotifyChannelNeedMusicId = "needmusic_emergencynews";
@@ -58,7 +62,7 @@ public class RefreshMsgService extends Service
             mNotificationChannel.setShowBadge(true);
             mNotificationChannel.enableVibration(true);
             mNotificationChannel.setLightColor(Color.RED);
-            mNotificationChannel.setSound(null,null);
+            mNotificationChannel.setSound(Settings.System.DEFAULT_NOTIFICATION_URI,Notification.AUDIO_ATTRIBUTES_DEFAULT);
             mNotificationChannel.setVibrationPattern(new long[]{1000, 1000, 1000, 1000});
             mNotificationChannel.setDescription(getString(R.string.emergencynewsdes_notneedmusic));
             mNotificationManager.createNotificationChannel(mNotificationChannel);
@@ -87,7 +91,7 @@ public class RefreshMsgService extends Service
             mIsChangeMsgStatus = false;
             BaseMvp_EntranceOfModel.requestDatas(RefresgMsgModel.class).executeOfNet(this,RefresgMsgModel.RefresgMsg,new BaseMvp_LocalListCallBack<BaseReturnListData<RefreshMsgBean>>(new BaseMvp_Presenter())
             {
-                public void onSuccess(BaseReturnListData<RefreshMsgBean> refreshMsgBeans)
+                public synchronized void onSuccess(BaseReturnListData<RefreshMsgBean> refreshMsgBeans)
                 {
                     List<RefreshMsgBean> refreshMsgBeanList = Arrays.asList(refreshMsgBeans.getData());
                     for(RefreshMsgBean refreshMsgBean : refreshMsgBeanList)
@@ -104,15 +108,22 @@ public class RefreshMsgService extends Service
                                 mNotificationCompatBuilder = new NotificationCompat.Builder(getApplicationContext());
                             }
                             int flags = PendingIntent.FLAG_UPDATE_CURRENT;
-                            Intent intent = new Intent(getApplicationContext(),MsgDetailAct.class);
+
+                            Intent[] intents = new Intent[2];
+                            Intent intent = new Intent(getApplicationContext(),MainAct.class);
+                            intents[0] = intent;
+                            intent = new Intent(getApplicationContext(),MsgDetailAct.class);
                             intent.putExtra("msgid",null != refreshMsgBean.getId() ? refreshMsgBean.getId().trim() : "0");
-                            PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(),0, intent, flags);
+                            intents[1] = intent;
+                            PendingIntent pendingIntent = PendingIntent.getActivities(getApplicationContext(),requestCode++, intents, flags);
+
                             /******************************************************************************************************************************************************/
                             Notification notification = mNotificationCompatBuilder .setSmallIcon(R.mipmap.ic_launcher).setLargeIcon(BitmapFactory.decodeResource(getResources(),R.mipmap.ic_launcher)).
                                     setContentTitle(getString(R.string.emergencynews)).setContentText(null != refreshMsgBean.getTextContent() ? refreshMsgBean.getTextContent().trim() : "").
                                     setShowWhen(true).setWhen(System.currentTimeMillis()).setAutoCancel(true).
                                     setSound(Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.emergencynews)).
                                     setLights(0xffff0000,2000,1000).setVibrate(new long[]{1000,1000,1000,1000}).setContentIntent(pendingIntent).build();
+                            mNotificationManager.cancel(Integer.valueOf(refreshMsgBean.getId()));
                             mNotificationManager.notify(Integer.valueOf(refreshMsgBean.getId()),notification);
                             refreshMsgEnd(null != refreshMsgBean.getId() ? refreshMsgBean.getId().trim() : "0","2");
                             mIsChangeMsgStatus = true;
@@ -129,14 +140,21 @@ public class RefreshMsgService extends Service
                                 mNotificationCompatBuilder = new NotificationCompat.Builder(getApplicationContext());
                             }
                             int flags = PendingIntent.FLAG_UPDATE_CURRENT;
-                            Intent intent = new Intent(getApplicationContext(),MsgDetailAct.class);
+
+                            Intent[] intents = new Intent[2];
+                            Intent intent = new Intent(getApplicationContext(),MainAct.class);
+                            intents[0] = intent;
+                            intent = new Intent(getApplicationContext(),MsgDetailAct.class);
                             intent.putExtra("msgid",null != refreshMsgBean.getId() ? refreshMsgBean.getId().trim() : "0");
-                            PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(),0, intent, flags);
+                            intents[1] = intent;
+                            PendingIntent pendingIntent = PendingIntent.getActivities(getApplicationContext(),requestCode++, intents, flags);
+
                             /******************************************************************************************************************************************************/
                             Notification notification = mNotificationCompatBuilder .setSmallIcon(R.mipmap.ic_launcher).setLargeIcon(BitmapFactory.decodeResource(getResources(),R.mipmap.ic_launcher)).
                                     setContentTitle(getString(R.string.emergencynews)).setContentText(null != refreshMsgBean.getTextContent() ? refreshMsgBean.getTextContent().trim() : "").
-                                    setShowWhen(true).setWhen(System.currentTimeMillis()).setAutoCancel(true).setSound(null).
+                                    setShowWhen(true).setWhen(System.currentTimeMillis()).setAutoCancel(true).setSound(Settings.System.DEFAULT_NOTIFICATION_URI).
                                     setLights(0xffff0000,2000,1000).setVibrate(new long[]{1000,1000,1000,1000}).setContentIntent(pendingIntent).build();
+                            mNotificationManager.cancel(Integer.valueOf(refreshMsgBean.getId()));
                             mNotificationManager.notify(Integer.valueOf(refreshMsgBean.getId()),notification);
                             refreshMsgEnd(null != refreshMsgBean.getId() ? refreshMsgBean.getId().trim() : "0","1");
                             mIsChangeMsgStatus = true;

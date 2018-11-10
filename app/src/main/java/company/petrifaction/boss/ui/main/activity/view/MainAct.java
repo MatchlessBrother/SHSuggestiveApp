@@ -38,8 +38,7 @@ public class MainAct extends BaseAct implements MainAct_V,SignInAct_V
     private SignInPresenter mSignInPresenter;
     private RecyclerView mMainactRecyclerview;
     private SwipeRefreshLayout mMainactSwiperefreshlayout;
-
-    public static final int StartMsgDetailAct = 0x0001;
+    //public static final int StartMsgDetailAct = 0x0001;
 
     protected int setLayoutResID()
     {
@@ -75,6 +74,20 @@ public class MainAct extends BaseAct implements MainAct_V,SignInAct_V
         mMainactSwiperefreshlayout.setEnabled(true);
         mMsgAdapter.setEnableLoadMore(true);
         RxBus.get().register(this);
+    }
+
+    protected void onResume()
+    {
+        super.onResume();
+        mMainPresenter.refreshDatas();
+    }
+
+    public void onBackPressed()
+    {
+        Intent intent = new Intent(Intent.ACTION_MAIN);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.addCategory(Intent.CATEGORY_HOME);
+        startActivity(intent);
     }
 
     protected void onDestroy()
@@ -127,7 +140,8 @@ public class MainAct extends BaseAct implements MainAct_V,SignInAct_V
             {
                 Intent intent = new Intent(mActivity,MsgDetailAct.class);
                 intent.putExtra("msgid",mMsgAdapter.getData().get(position).getId());
-                startActivityForResult(intent,StartMsgDetailAct);
+                startActivity(intent);
+                //startActivityForResult(intent,StartMsgDetailAct);
             }
         });
     }
@@ -267,12 +281,12 @@ public class MainAct extends BaseAct implements MainAct_V,SignInAct_V
         return false;
     }
 
-    protected void onActivityResult(int requestCode, int resultCode, Intent data)
+   /* protected void onActivityResult(int requestCode, int resultCode, Intent data)
     {
         super.onActivityResult(requestCode, resultCode, data);
         switch(requestCode)
         {
-            case StartMsgDetailAct:  mMainPresenter.refreshDatas();break;
+            case StartMsgDetailAct:mMainPresenter.refreshDatas();break;
         }
-    }
+    }*/
 }

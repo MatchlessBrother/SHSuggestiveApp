@@ -102,6 +102,8 @@ public class ProtectNotifycationService extends AbsWorkService
             {
                 executeNotifiesService();
                 executeNotifiesListenerService();
+                RefreshMsgService.isStop = false;
+                NotificationMonitorService.isStop = false;
             }
         });
     }

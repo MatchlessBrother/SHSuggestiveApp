@@ -2,6 +2,7 @@ package company.petrifaction.boss.service.main;
 
 import android.os.Build;
 import android.app.Notification;
+import company.petrifaction.boss.R;
 import android.annotation.SuppressLint;
 import me.leolin.shortcutbadger.ShortcutBadger;
 import android.service.notification.StatusBarNotification;
@@ -31,7 +32,7 @@ public class NotificationMonitorService extends NotificationListenerService
             StatusBarNotification[]  statusBarNotifications = getActiveNotifications();
             for(StatusBarNotification statusBarNotification : statusBarNotifications)
             {
-                if(statusBarNotification.getPackageName().toLowerCase().trim().contains(getPackageName().toLowerCase().trim()))
+                if(statusBarNotification.getPackageName().toLowerCase().trim().contains(getPackageName().toLowerCase().trim()) && null != statusBarNotification.getNotification().extras.getString(Notification.EXTRA_TITLE) && statusBarNotification.getNotification().extras.getString(Notification.EXTRA_TITLE).contains(getString(R.string.emergencynews)))
                 {
                     mEffectiveNumberOfNotices++;
                 }
@@ -59,7 +60,7 @@ public class NotificationMonitorService extends NotificationListenerService
             StatusBarNotification[]  statusBarNotifications = getActiveNotifications();
             for(StatusBarNotification statusBarNotification : statusBarNotifications)
             {
-                if(statusBarNotification.getPackageName().toLowerCase().trim().contains(getPackageName().toLowerCase().trim()))
+                if(statusBarNotification.getPackageName().toLowerCase().trim().contains(getPackageName().toLowerCase().trim()) && null != statusBarNotification.getNotification().extras.getString(Notification.EXTRA_TITLE) && statusBarNotification.getNotification().extras.getString(Notification.EXTRA_TITLE).contains(getString(R.string.emergencynews)))
                 {
                     mEffectiveNumberOfNotices++;
                 }
