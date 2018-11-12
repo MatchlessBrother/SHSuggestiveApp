@@ -44,7 +44,8 @@
         <activity
             android:name="company.petrifaction.boss.ui.main.activity.view.SignInAct"
             android:theme="@style/AppTheme.FirstPage"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"
+            android:excludeFromRecents="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -54,20 +55,24 @@
         <activity
             android:name="company.petrifaction.boss.ui.main.activity.view.MainAct"
             android:screenOrientation="portrait"
-            android:launchMode="singleTask"/>
+            android:launchMode="singleTask"
+            android:excludeFromRecents="true"/>
 
         <activity
             android:name="company.petrifaction.boss.ui.main.activity.view.ModifyPasswordAct"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait"
+            android:excludeFromRecents="true"/>
 
         <activity
             android:name="company.petrifaction.boss.ui.main.activity.view.PreviewPhotoAct"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait"
+            android:excludeFromRecents="true"/>
 
         <activity
             android:name="company.petrifaction.boss.ui.main.activity.view.MsgDetailAct"
             android:screenOrientation="portrait"
-            android:launchMode="singleTask"/>
+            android:launchMode="singleTask"
+            android:excludeFromRecents="true"/>
 
         <service android:name="company.petrifaction.boss.service.main.RefreshMsgService"/>
 
